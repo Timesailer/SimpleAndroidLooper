@@ -28,19 +28,22 @@ public class MainActivity extends AppCompatActivity {
 
     //Code largely untested, it does stuff and mostly doesnt crash, but i dont have good logs atm and its 1 am
 
-    //Samplestuff adapted: http://androidsourcecode.blogspot.de/2013/07/android-audio-demo-audiotrack.html
+    //Samplestuff adapted: http://androidsourcecode.blogspot.de/2013/07/android-audio-demo-audiotracks.html
     //Audiostuff
     AudioManager am = null;
     AudioRecord rec = null;
-    AudioTrack track = null;
+    AudioTrack[] tracks = new AudioTrack[7];
 
     //buffered recording
-    //TODO: truncate the last chunk, optimize shit, see how it works with static track
-    ArrayList<BufferTuple> audiobuffer = new ArrayList<BufferTuple>();
+    //TODO: truncate the last chunk, optimize shit, see how it works with static tracks
+    ArrayList<BufferTuple>[] audiobuffer = new ArrayList[7];
+
 
     //Interface
     Button btnRec;
     Button btnPlay;
+    Button btnRec2;
+    Button btnPlay2;
 
     boolean isRecording = false;
     boolean isPlaying = true;
@@ -71,11 +74,16 @@ public class MainActivity extends AppCompatActivity {
         //Ask recording permission
         ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
 
+        //init audiobuffer
+        for(int i = 0; i < 7; i++){
+            audiobuffer[i] = new ArrayList<BufferTuple>();
+        }
+
         btnRec = (Button) findViewById(R.id.btnRec);
         btnRec.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onRecord();
+                onRecord(0);
             }
         });
 
@@ -83,29 +91,55 @@ public class MainActivity extends AppCompatActivity {
         btnPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onPlay();
+                onPlay(0);
             }
         });
 
+        btnRec2 = (Button) findViewById(R.id.btnRec2);
+        btnRec2.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                onRecord(1);
+            }
+        });
+
+
+        btnPlay2 = (Button) findViewById(R.id.btnPlay2);
+        btnPlay2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onPlay(1);
+            }
+        });
         //initialize recorder sample code got an exception on my phone
-        int min = AudioRecord.getMinBufferSize(8000, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT);
+        //int min = AudioRecord.getMinBufferSize(8000, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT);
         //rec = new AudioRecord(MediaRecorder.AudioSource.VOICE_COMMUNICATION, 8000, AudioFormat.CHANNEL_IN_MONO,
         //        AudioFormat.ENCODING_PCM_16BIT, min);
-        //rec = findAudioRecord();
+        rec = findAudioRecord();
+        Log.v("audioshit", "samplerate: " + rec.getSampleRate() + "\nAudioFormat: " + rec.getAudioFormat() + "\nChannelconf: " + rec.getChannelConfiguration());
 
-        //initialize track
-        int maxJitter = AudioTrack.getMinBufferSize(8000, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT);
-        track = new AudioTrack(AudioManager.MODE_IN_COMMUNICATION, 8000, AudioFormat.CHANNEL_OUT_MONO,
-                AudioFormat.ENCODING_PCM_16BIT, maxJitter, AudioTrack.MODE_STREAM);
-
+        //initialize tracks
+        int maxJitter = AudioTrack.getMinBufferSize(rec.getSampleRate(), AudioFormat.CHANNEL_OUT_MONO, rec.getAudioFormat());
+        for(int i = 0; i < 7; i++){
+            tracks[i] = new AudioTrack(AudioManager.MODE_IN_COMMUNICATION, rec.getSampleRate(), AudioFormat.CHANNEL_OUT_MONO,
+                    rec.getAudioFormat(), maxJitter, AudioTrack.MODE_STREAM);
+        }
     }
 
-    void onRecord(){
+    AudioTrack initATrack(){
+        AudioTrack at = null;
+        int maxJitter = AudioTrack.getMinBufferSize(rec.getSampleRate(), AudioFormat.CHANNEL_OUT_MONO, rec.getAudioFormat());
+        at = new AudioTrack(AudioManager.MODE_IN_COMMUNICATION, rec.getSampleRate(), AudioFormat.CHANNEL_OUT_MONO,
+                rec.getAudioFormat(), maxJitter, AudioTrack.MODE_STREAM);
+        return at;
+    }
+
+    void onRecord(final int track){
         if(!isRecording){
             //reinitialize buffer, set bool
             isRecording = true;
-            audiobuffer = new ArrayList<BufferTuple>();
-            btnRec.setText("recording..");
+            audiobuffer[track] = new ArrayList<BufferTuple>();
+            btnRec.setText("recording" + track + "..");
             if (rec == null){
                 rec = findAudioRecord();
             }
@@ -114,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void run(){
                     Log.v("main", "Started recording Thread");
-                    recording();
+                    recording(track);
                     Log.v("main", "Close recording Thread");
                 }
             }).start();
@@ -125,53 +159,53 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    void onPlay(){
-        if(!isPlaying){
+    void onPlay(final int track){
+        //if(!isPlaying){
             isPlaying = true;
-            btnPlay.setText("playing");
+            btnPlay.setText("playing" + track);
+            tracks[track] = initATrack();
             (new Thread(){
                 @Override
                 public void run(){
-                    Log.v("main", "Started playing Thread");
-                    play();
-                    Log.v("main", "Close playing Thread");
+                    Log.v("audioshit", "Started playing Thread for Track" + track);
+                    play(track);
+                    Log.v("audioshit", "Close playing Thread for Track" + track);
                 }
             }).start();
-        }else{
-            isPlaying = false;
-            btnPlay.setText("play");
-        }
+        //}else{
+        //    isPlaying = false;
+        //    btnPlay.setText("play" + track);
+        //}
     }
 
-    void recording(){
+    void recording(int track){
         short[] input = new short[1024];
         rec.startRecording();
         int samples = 0;
         Log.v("main", "start writing bufferchunks");
         while(isRecording){
             samples = rec.read(input, 0, 1024);
-            audiobuffer.add(new BufferTuple(input, samples));
+            audiobuffer[track].add(new BufferTuple(input, samples));
         }
         rec.stop();
-        Log.v("Main", "Written " + audiobuffer.size() + " chunks to buffer");
+        Log.v("Main", "Written " + audiobuffer[track].size() + " chunks to buffer");
     }
 
-    void play(){
-        track.play();
+    void play(int track){
+        tracks[track].play();
         Log.v("main", "start reading and looping buffer");
         while (isPlaying){
-            for (int i = 0; i < audiobuffer.size(); i++){
-                track.write(audiobuffer.get(i).buffer, 0, audiobuffer.get(i).samples);
+            for (int i = 0; i < audiobuffer[track].size(); i++){
+                tracks[track].write(audiobuffer[track].get(i).buffer, 0, audiobuffer[track].get(i).samples);
             }
         }
-        track.release();
     }
 
     //Find The right stuff for your recording hardware on your phone
     private static int[] mSampleRates = new int[] { 8000, 11025, 22050, 44100 };
     public AudioRecord findAudioRecord() {
         for (int rate : mSampleRates) {
-            for (short audioFormat : new short[] { AudioFormat.ENCODING_PCM_8BIT, AudioFormat.ENCODING_PCM_16BIT }) {
+            for (short audioFormat : new short[] { AudioFormat.ENCODING_PCM_16BIT, AudioFormat.ENCODING_PCM_8BIT }) {
                 for (short channelConfig : new short[] { AudioFormat.CHANNEL_IN_MONO, AudioFormat.CHANNEL_IN_STEREO }) {
                     try {
                         Log.d("main", "Attempting rate " + rate + "Hz, bits: " + audioFormat + ", channel: "
