@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
             audiobuffer[i] = new ArrayList<BufferTuple>();
         }
 
+        /*
         btnRec = (Button) findViewById(R.id.btnRec);
         btnRec.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,6 +112,8 @@ public class MainActivity extends AppCompatActivity {
                 onPlay(1);
             }
         });
+
+        */
         //initialize recorder sample code got an exception on my phone
         //int min = AudioRecord.getMinBufferSize(8000, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT);
         //rec = new AudioRecord(MediaRecorder.AudioSource.VOICE_COMMUNICATION, 8000, AudioFormat.CHANNEL_IN_MONO,
