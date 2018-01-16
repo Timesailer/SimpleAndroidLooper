@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/SimpleAndroidLooper.iml" filepath="$PROJECT_DIR$/SimpleAndroidLooper.iml" />
+      <module fileurl="file://C:\Milan\Uni\EMA\SimpleAudioLooper\SimpleAndroidLooper.iml" filepath="C:\Milan\Uni\EMA\SimpleAudioLooper\SimpleAndroidLooper.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SimpleAudioLooper.iml" filepath="$PROJECT_DIR$/SimpleAudioLooper.iml" />
       <module fileurl="file://C:\Users\Thundersama\Desktop\MasterStuff\sem_4\ema\app\SimpleAndroidLooper\SimpleAudioLooper.iml" filepath="C:\Users\Thundersama\Desktop\MasterStuff\sem_4\ema\app\SimpleAndroidLooper\SimpleAudioLooper.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>

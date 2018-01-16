@@ -9,9 +9,9 @@ import java.util.ArrayList;
 
 /**
  * LAYOUTNOTIZEN
- * Grün - freie Audiospur
- * Orange - Aufgenommene Audiospur
- * Rot - Aufnahme
+ * Grün - freie Audiospur - colorPrimary
+ * Orange - Aufgenommene Audiospur - colorPrimaryDark
+ * Rot - Aufnahme - colorAccent
  */
 
 public class AudioMixer {
