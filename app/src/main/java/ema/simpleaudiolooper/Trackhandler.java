@@ -1,5 +1,8 @@
 package ema.simpleaudiolooper;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioRecord;
@@ -21,20 +24,17 @@ public class Trackhandler {
     //Audiostuff
     AudioManager am = null;
     AudioRecord rec = null;
-    AudioTrackData[] tracks = new AudioTrackData[8];
+    AudioTrackData[] audioTrackArray = new AudioTrackData[8];
 
     boolean isRecording = false;
-    boolean[] isPlaying = new boolean[8];
     int recordingIndex = -1;
 
     //buffered recording
     //TODO: truncate the last chunk, optimize shit, see how it works with static tracks
-    ArrayList<BufferTuple>[] audiobuffer = new ArrayList[8];
 
     public Trackhandler(){
-        //init audiobuffer
         for(int i = 0; i < 7; i++){
-            audiobuffer[i] = new ArrayList<BufferTuple>();
+            audioTrackArray[i] = new AudioTrackData();
         }
 
         //initialize recorder sample code got an exception on my phone
@@ -48,7 +48,13 @@ public class Trackhandler {
 
     public void handleButton(Button button, int index){
         //todo check btn state
-        //if empty onRecord idx // change btn color  // set Audiotrackdata flag
+        AudioTrackData atd = audioTrackArray[index];
+        if(!audioTrackArray[index].isRecorded()){
+            button.setBackgroundColor(Color.RED);
+            onRecord(atd, button);
+        }else{
+            onPlay(atd);
+        }
     }
 
     AudioTrack initATrack(){
@@ -59,11 +65,10 @@ public class Trackhandler {
         return at;
     }
 
-    void onRecord(final int index){
+    void onRecord(final AudioTrackData atd,final Button btn){
         if(!isRecording){
             //reinitialize buffer, set bool
             isRecording = true;
-            audiobuffer[index] = new ArrayList<BufferTuple>();
             if (rec == null){
                 rec = findAudioRecord();
             }
@@ -72,7 +77,7 @@ public class Trackhandler {
                 @Override
                 public void run(){
                     Log.v("main", "Started recording Thread");
-                    recording(index);
+                    recording(atd, btn);
                     Log.v("main", "Close recording Thread");
                 }
             }).start();
@@ -82,44 +87,46 @@ public class Trackhandler {
         }
     }
 
-    void onPlay(final int track){
-        //if(!isPlaying){
-        isPlaying[track] = true;
-        tracks[track].setAudioTrack(initATrack());
+    void onPlay(final AudioTrackData atd){
+        if(!atd.isPlaying()){
+        atd.setPlaying(true);
+        atd.setAudioTrack(initATrack());
         (new Thread(){
             @Override
             public void run(){
-                Log.v("audioshit", "Started playing Thread for Track" + track);
-                play(track);
-                Log.v("audioshit", "Close playing Thread for Track" + track);
+                Log.v("audioshit", "Started playing Thread for Track" + atd);
+                play(atd);
+                Log.v("audioshit", "Close playing Thread for Track" + atd);
             }
         }).start();
-        //}else{
-        //    isPlaying = false;
-        //    btnPlay.setText("play" + track);
-        //}
+        }else{
+            atd.setPlaying(false);
+            Log.v("data","stop playing");
+        }
     }
 
-    void recording(int track){
+    void recording(AudioTrackData atd,  Button btn){
         short[] input = new short[1024];
         rec.startRecording();
         int samples = 0;
         Log.v("main", "start writing bufferchunks");
         while(isRecording){
             samples = rec.read(input, 0, 1024);
-            audiobuffer[track].add(new BufferTuple(input, samples));
+             atd.fillAudioBuffer(new BufferTuple(input, samples));
         }
         rec.stop();
-        tracks[track].setRecorded(true);
-        Log.v("Main", "Written " + audiobuffer[track].size() + " chunks to buffer");
+        //todo not setting color properly
+        Log.v("data","stop recordng");
+        btn.setBackgroundColor(Color.YELLOW);
+        atd.setRecorded(true);
     }
 
-    void play(int track){
-        tracks[track].getAudioTrack().play();
+    void play(AudioTrackData atd){
+        atd.getAudioTrack().play();
         Log.v("main", "start reading and looping buffer");
-        while (isPlaying[track]){
-            for (int i = 0; i < audiobuffer[track].size(); i++){
-                tracks[track].getAudioTrack().write(audiobuffer[track].get(i).buffer, 0, audiobuffer[track].get(i).samples);
+        while (atd.isPlaying()){
+            for (int i = 0; i < atd.getAudioBuffer().size(); i++){
+                atd.getAudioTrack().write(atd.getAudioBuffer().get(i).buffer, 0, atd.getAudioBuffer().get(i).samples);
             }
         }
     }

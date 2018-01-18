@@ -3,27 +3,47 @@ package ema.simpleaudiolooper;
 import android.media.AudioTrack;
 import android.provider.MediaStore;
 
+import java.nio.Buffer;
+import java.util.ArrayList;
+
 /**
  * Created by milan_000 on 16.01.2018.
  */
 
 public class AudioTrackData {
-    AudioTrack at = null;
-    boolean isRecorded = false;
+    private AudioTrack at = null;
+    private ArrayList<BufferTuple> audiobuffer = new ArrayList<BufferTuple>();
 
-    public  AudioTrack getAudioTrack(){
+    private boolean isRecorded = false;
+    private boolean isPlaying = false;
+
+    AudioTrack getAudioTrack(){
         return at;
     }
 
-    public void setAudioTrack(AudioTrack at){
+    ArrayList<BufferTuple> getAudioBuffer(){
+        return audiobuffer;
+    }
+
+    void fillAudioBuffer(BufferTuple bt){
+        this.audiobuffer.add(bt);
+    }
+
+    void setAudioTrack(AudioTrack at){
         this.at = at;
     }
 
-    public boolean isRecorded(){
+    boolean isRecorded(){
         return isRecorded;
     }
 
-    public void setRecorded(boolean isRecorded){
+    void setRecorded(boolean isRecorded){
         this.isRecorded = isRecorded;
+    }
+
+    boolean isPlaying() {return isPlaying;}
+
+    void setPlaying(boolean isPlaying){
+        this.isPlaying = isPlaying;
     }
 }
