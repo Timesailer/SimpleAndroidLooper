@@ -47,7 +47,8 @@ public class Trackhandler {
     }
 
     public void handleButton(Button button, int index){
-
+        //todo check btn state
+        //if empty onRecord idx // change btn color  // set Audiotrackdata flag
     }
 
     AudioTrack initATrack(){
@@ -109,6 +110,7 @@ public class Trackhandler {
             audiobuffer[track].add(new BufferTuple(input, samples));
         }
         rec.stop();
+        tracks[track].setRecorded(true);
         Log.v("Main", "Written " + audiobuffer[track].size() + " chunks to buffer");
     }
 
