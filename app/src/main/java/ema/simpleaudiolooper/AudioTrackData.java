@@ -46,4 +46,11 @@ public class AudioTrackData {
     void setPlaying(boolean isPlaying){
         this.isPlaying = isPlaying;
     }
+
+    void clear(){
+        this.audiobuffer = new ArrayList<BufferTuple>();
+        this.at = null;
+        this.isRecorded = false;
+        this.isPlaying = false;
+    }
 }

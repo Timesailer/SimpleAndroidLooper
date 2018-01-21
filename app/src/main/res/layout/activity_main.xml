@@ -22,8 +22,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:background="@color/colorPrimary"
-        app:layout_constraintTop_toBottomOf="@+id/btn1"
         app:layout_constraintStart_toStartOf="@+id/btn1"
+        app:layout_constraintTop_toBottomOf="@+id/btn1"
         tools:layout_editor_absoluteX="108dp" />
 
     <com.gc.materialdesign.views.ButtonRectangle
@@ -32,8 +32,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:background="@color/colorPrimary"
-        app:layout_constraintTop_toBottomOf="@+id/btn2"
         app:layout_constraintStart_toStartOf="@+id/btn2"
+        app:layout_constraintTop_toBottomOf="@+id/btn2"
         tools:layout_editor_absoluteX="108dp" />
 
     <com.gc.materialdesign.views.ButtonRectangle
@@ -42,8 +42,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:background="@color/colorPrimary"
-        app:layout_constraintTop_toBottomOf="@+id/btn3"
         app:layout_constraintStart_toStartOf="@+id/btn3"
+        app:layout_constraintTop_toBottomOf="@+id/btn3"
         tools:layout_editor_absoluteX="108dp" />
 
     <com.gc.materialdesign.views.ButtonRectangle
@@ -62,8 +62,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:background="@color/colorPrimary"
-        app:layout_constraintTop_toBottomOf="@+id/btn5"
         app:layout_constraintStart_toStartOf="@+id/btn5"
+        app:layout_constraintTop_toBottomOf="@+id/btn5"
         tools:layout_editor_absoluteX="108dp" />
 
     <com.gc.materialdesign.views.ButtonRectangle
@@ -72,8 +72,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:background="@color/colorPrimary"
-        app:layout_constraintTop_toBottomOf="@+id/btn6"
         app:layout_constraintStart_toStartOf="@+id/btn6"
+        app:layout_constraintTop_toBottomOf="@+id/btn6"
         tools:layout_editor_absoluteX="108dp" />
 
     <com.gc.materialdesign.views.ButtonRectangle
@@ -82,22 +82,119 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:background="@color/colorPrimary"
-        app:layout_constraintTop_toBottomOf="@+id/btn7"
         app:layout_constraintStart_toStartOf="@+id/btn7"
+        app:layout_constraintTop_toBottomOf="@+id/btn7"
         tools:layout_editor_absoluteX="108dp" />
 
-    <android.support.constraint.Guideline
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/guidelineVertL"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.25"/>
 
     <android.support.constraint.Guideline
+        android:id="@+id/guidelineVertL"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/guidelineVertR"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.75"/>
+        app:layout_constraintGuide_percent="0.25" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guidelineVertR"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.75" />
+
+    <TextView
+        android:id="@+id/clear1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="X"
+        android:textAlignment="center"
+        android:textColor="#dd2c00"
+        android:textSize="20sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/btn1"
+        app:layout_constraintStart_toEndOf="@+id/btn1" />
+
+    <TextView
+        android:id="@+id/clear2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="X"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textColor="#dd2c00"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/btn2"
+        app:layout_constraintStart_toEndOf="@+id/btn2" />
+
+    <TextView
+        android:id="@+id/clear3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="X"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textColor="#dd2c00"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/btn3"
+        app:layout_constraintStart_toEndOf="@+id/btn3" />
+
+    <TextView
+        android:id="@+id/clear4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="X"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textColor="#dd2c00"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/btn4"
+        app:layout_constraintStart_toEndOf="@+id/btn4" />
+
+    <TextView
+        android:id="@+id/clear5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="X"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textColor="#dd2c00"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/btn5"
+        app:layout_constraintStart_toEndOf="@+id/btn5" />
+
+    <TextView
+        android:id="@+id/clear6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="X"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textColor="#dd2c00"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/btn6"
+        app:layout_constraintStart_toEndOf="@+id/btn6" />
+
+    <TextView
+        android:id="@+id/clear7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="X"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textColor="#dd2c00"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/btn7"
+        app:layout_constraintStart_toEndOf="@+id/btn7" />
+
+    <TextView
+        android:id="@+id/clear8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="X"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textColor="#dd2c00"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/btn8"
+        app:layout_constraintStart_toEndOf="@+id/btn8" />
 
 </android.support.constraint.ConstraintLayout>

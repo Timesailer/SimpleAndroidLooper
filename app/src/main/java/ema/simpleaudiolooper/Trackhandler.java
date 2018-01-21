@@ -9,6 +9,8 @@ import android.media.AudioRecord;
 import android.media.AudioTrack;
 import android.media.MediaRecorder;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import com.gc.materialdesign.views.Button;
 
@@ -33,7 +35,7 @@ public class Trackhandler {
     //TODO: truncate the last chunk, optimize shit, see how it works with static tracks
 
     public Trackhandler(){
-        for(int i = 0; i < 7; i++){
+        for(int i = 0; i < 8; i++){
             audioTrackArray[i] = new AudioTrackData();
         }
 
@@ -46,15 +48,23 @@ public class Trackhandler {
 
     }
 
-    public void handleButton(Button button, int index){
+    public void handleButton(Button button,TextView clear, int index){
         //todo check btn state
         AudioTrackData atd = audioTrackArray[index];
         if(!audioTrackArray[index].isRecorded()){
             button.setBackgroundColor(Color.RED);
+            clear.setVisibility(View.VISIBLE);
             onRecord(atd, button);
         }else{
+
             onPlay(atd);
         }
+    }
+
+    public void handleClear(Button track, TextView clear, int index){
+        clear.setVisibility(View.INVISIBLE);
+        track.setBackgroundColor(Color.GREEN);
+        audioTrackArray[index].clear();
     }
 
     AudioTrack initATrack(){
@@ -79,6 +89,8 @@ public class Trackhandler {
                     Log.v("main", "Started recording Thread");
                     recording(atd, btn);
                     Log.v("main", "Close recording Thread");
+                    btn.setBackgroundColor(Color.YELLOW);
+
                 }
             }).start();
 
@@ -102,6 +114,11 @@ public class Trackhandler {
         }else{
             atd.setPlaying(false);
             Log.v("data","stop playing");
+            Log.v("data","flush called");
+            atd.getAudioTrack().pause();
+            atd.getAudioTrack().flush();
+            //atd.getAudioTrack().release();
+
         }
     }
 
@@ -117,7 +134,6 @@ public class Trackhandler {
         rec.stop();
         //todo not setting color properly
         Log.v("data","stop recordng");
-        btn.setBackgroundColor(Color.YELLOW);
         atd.setRecorded(true);
     }
 
@@ -126,9 +142,11 @@ public class Trackhandler {
         Log.v("main", "start reading and looping buffer");
         while (atd.isPlaying()){
             for (int i = 0; i < atd.getAudioBuffer().size(); i++){
+
                 atd.getAudioTrack().write(atd.getAudioBuffer().get(i).buffer, 0, atd.getAudioBuffer().get(i).samples);
             }
         }
+
     }
 
 

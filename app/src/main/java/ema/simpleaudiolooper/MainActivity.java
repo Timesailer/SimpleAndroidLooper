@@ -7,6 +7,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import com.gc.materialdesign.views.Button;
 
@@ -17,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Interface
     Button[] buttons = new Button[8];
-
+    TextView[] clear = new TextView[8];
     //rec permissions
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
     private boolean permissionToRecordAccepted = false;
@@ -54,14 +55,32 @@ public class MainActivity extends AppCompatActivity {
         buttons[6] = (Button) findViewById(R.id.btn7);
         buttons[7] = (Button) findViewById(R.id.btn8);
 
+        clear[0] = findViewById(R.id.clear1);
+        clear[1] = findViewById(R.id.clear2);
+        clear[2] = findViewById(R.id.clear3);
+        clear[3] = findViewById(R.id.clear4);
+        clear[4] = findViewById(R.id.clear5);
+        clear[5] = findViewById(R.id.clear6);
+        clear[6] = findViewById(R.id.clear7);
+        clear[7] = findViewById(R.id.clear8);
+
+
         for (int i = 0; i < buttons.length; i++){
             final int index = i;
             buttons[i].setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view){
-                    trackhandler.handleButton(buttons[index], index);
+                    trackhandler.handleButton(buttons[index],clear[index], index);
                 }
             });
+
+            clear[i].setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view){
+                    trackhandler.handleClear(buttons[index],clear[index], index);
+                }
+            });
+
         }
 
     }
