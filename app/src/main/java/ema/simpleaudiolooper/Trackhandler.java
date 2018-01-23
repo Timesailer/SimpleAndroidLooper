@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.gc.materialdesign.views.Button;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -139,18 +140,39 @@ public class Trackhandler {
 
     void play(AudioTrackData atd){
         atd.getAudioTrack().play();
-        Log.v("main", "start reading and looping buffer");
+        Log.v("audioshit", "start reading and looping buffer");
+        //short[] buffer = atd.getAudioBuffer().get(2).buffer;
         while (atd.isPlaying()){
             for (int i = 0; i < atd.getAudioBuffer().size(); i++){
 
                 atd.getAudioTrack().write(atd.getAudioBuffer().get(i).buffer, 0, atd.getAudioBuffer().get(i).samples);
             }
         }
+    }
 
+    void playMix(){
+        int recorded = 0;
+        ArrayList<AudioTrackData> atdList = new ArrayList<AudioTrackData>();
+        for(int i = 0; i< 8; i++) {
+            if (audioTrackArray[i].isRecorded()) {
+                recorded++;
+                atdList.add(audioTrackArray[i]);
+            }
+        }
+
+        AudioTrackData[] allSamples= new AudioTrackData[recorded];
+        allSamples = atdList.toArray(allSamples);
+       short[] mix =  AudioMixer.combineTracks(allSamples);
+       final AudioTrackData mixData = new AudioTrackData();
+       mixData.getAudioBuffer().add(new BufferTuple(mix,mix.length));
+
+
+       onPlay(mixData);
     }
 
 
     //Find The right stuff for your recording hardware on your phone
+    //https://stackoverflow.com/questions/29695269/android-audiorecord-audiotrack-playing-recording-from-buffer
     private static int[] mSampleRates = new int[] { 8000, 11025, 22050, 44100 };
     public AudioRecord findAudioRecord() {
         for (int rate : mSampleRates) {

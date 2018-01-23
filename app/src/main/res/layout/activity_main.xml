@@ -197,4 +197,17 @@
         app:layout_constraintBottom_toTopOf="@+id/btn8"
         app:layout_constraintStart_toEndOf="@+id/btn8" />
 
+    <TextView
+        android:id="@+id/playMix"
+        android:layout_width="116dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="30dp"
+        android:text="Play Mix"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVertR"
+        app:layout_constraintStart_toStartOf="@+id/guidelineVertL"
+        app:layout_constraintTop_toBottomOf="@+id/btn4" />
+
 </android.support.constraint.ConstraintLayout>

@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -64,6 +65,16 @@ public class MainActivity extends AppCompatActivity {
         clear[6] = findViewById(R.id.clear7);
         clear[7] = findViewById(R.id.clear8);
 
+        TextView playMix = findViewById(R.id.playMix);
+
+
+        playMix.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Log.v("saples","onclick");
+                trackhandler.playMix();
+            }
+        });
 
         for (int i = 0; i < buttons.length; i++){
             final int index = i;
@@ -80,8 +91,9 @@ public class MainActivity extends AppCompatActivity {
                     trackhandler.handleClear(buttons[index],clear[index], index);
                 }
             });
-
         }
 
     }
+
+
 }
