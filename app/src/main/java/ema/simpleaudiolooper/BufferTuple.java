@@ -6,7 +6,9 @@ package ema.simpleaudiolooper;
 
 //Class to keep the buffer with the number of grabbed samples together in the list
 public class BufferTuple {
+    //Audiobuffer containing the samples
     public final short[] buffer;
+    //nr of samples in the buffer
     public final int samples;
 
     public BufferTuple(short[] buffer, int samples){
