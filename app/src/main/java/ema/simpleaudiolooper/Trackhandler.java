@@ -10,6 +10,7 @@ import android.media.AudioTrack;
 import android.media.MediaRecorder;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.gc.materialdesign.views.Button;
@@ -49,21 +50,20 @@ public class Trackhandler {
 
     }
 
-    public void handleButton(Button button,TextView clear, int index){
+    public void handleButton(Button button, TextView clear, ImageButton playImg, int index){
         //todo check btn state
         AudioTrackData atd = audioTrackArray[index];
         if(!audioTrackArray[index].isRecorded()){
-            button.setBackgroundColor(Color.RED);
-            clear.setVisibility(View.VISIBLE);
-            onRecord(atd, button);
+            button.setBackgroundColor(0xFFdd2c00);
+            onRecord(atd,clear, button);
         }else{
-            onPlay(atd);
+            onPlay(atd,playImg);
         }
     }
 
     public void handleClear(Button track, TextView clear, int index){
         clear.setVisibility(View.INVISIBLE);
-        track.setBackgroundColor(Color.GREEN);
+        track.setBackgroundColor(0xFF64dd17);
         audioTrackArray[index].clear();
     }
 
@@ -75,7 +75,7 @@ public class Trackhandler {
         return at;
     }
 
-    void onRecord(final AudioTrackData atd,final Button btn){
+    void onRecord(final AudioTrackData atd, final TextView clear, final Button btn){
         if(!isRecording){
             //reinitialize buffer, set bool
             isRecording = true;
@@ -89,19 +89,24 @@ public class Trackhandler {
                     Log.v("main", "Started recording Thread");
                     recording(atd, btn);
                     Log.v("main", "Close recording Thread");
-                    btn.setBackgroundColor(Color.YELLOW);
 
                 }
             }).start();
 
         }else{
+            btn.setBackgroundColor(0xFFffab00);
+            clear.setVisibility(View.VISIBLE);
             isRecording = false;
         }
     }
 
-    void onPlay(final AudioTrackData atd){
+    void onPlay(final AudioTrackData atd, ImageButton playImg){
         if(!atd.isPlaying()){
             atd.setPlaying(true);
+            if(playImg != null){
+                playImg.setVisibility(View.VISIBLE);
+            }
+
             atd.setAudioTrack(initATrack());
             (new Thread(){
                 @Override
@@ -112,6 +117,9 @@ public class Trackhandler {
                 }
             }).start();
         }else{
+            if(playImg != null){
+                playImg.setVisibility(View.INVISIBLE);
+            }
             atd.pause();
 
         }
@@ -162,7 +170,7 @@ public class Trackhandler {
 
         audioMix.clear();
         audioMix.getAudioBuffer().add(new BufferTuple(mix,mix.length));
-        onPlay(audioMix);
+        onPlay(audioMix,null);
     }
 
     void stopMix(){

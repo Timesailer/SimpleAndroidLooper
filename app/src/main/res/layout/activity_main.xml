@@ -16,7 +16,19 @@
         android:layout_marginTop="100dp"
         android:background="@color/colorPrimary"
         app:layout_constraintStart_toStartOf="@+id/guidelineVertL"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" >
+
+        <ImageButton
+            android:id="@+id/imgBtn1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/background_transparent"
+            android:contentDescription="imgbtn1"
+            android:visibility="invisible"
+            app:srcCompat="@android:drawable/ic_media_play" />
+    </com.gc.materialdesign.views.ButtonRectangle>
 
     <com.gc.materialdesign.views.ButtonRectangle
         android:id="@+id/btn2"
@@ -26,7 +38,19 @@
         android:background="@color/colorPrimary"
         app:layout_constraintStart_toStartOf="@+id/btn1"
         app:layout_constraintTop_toBottomOf="@+id/btn1"
-        tools:layout_editor_absoluteX="108dp" />
+        tools:layout_editor_absoluteX="108dp" >
+
+        <ImageButton
+            android:id="@+id/imgBtn2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/background_transparent"
+            android:contentDescription="imgbtn"
+            android:visibility="invisible"
+            app:srcCompat="@android:drawable/ic_media_play" />
+    </com.gc.materialdesign.views.ButtonRectangle>
 
     <com.gc.materialdesign.views.ButtonRectangle
         android:id="@+id/btn3"
@@ -36,7 +60,20 @@
         android:background="@color/colorPrimary"
         app:layout_constraintStart_toStartOf="@+id/btn2"
         app:layout_constraintTop_toBottomOf="@+id/btn2"
-        tools:layout_editor_absoluteX="108dp" />
+        tools:layout_editor_absoluteX="108dp" >
+
+        <ImageButton
+            android:id="@+id/imgBtn3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/background_transparent"
+            android:contentDescription="imgbtn"
+            android:visibility="invisible"
+            app:srcCompat="@android:drawable/ic_media_play" />
+
+    </com.gc.materialdesign.views.ButtonRectangle>
 
     <com.gc.materialdesign.views.ButtonRectangle
         android:id="@+id/btn4"
@@ -46,7 +83,19 @@
         android:background="@color/colorPrimary"
         app:layout_constraintStart_toStartOf="@+id/btn3"
         app:layout_constraintTop_toBottomOf="@+id/btn3"
-        tools:layout_editor_absoluteX="108dp" />
+        tools:layout_editor_absoluteX="108dp" >
+
+        <ImageButton
+            android:id="@+id/imgBtn4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/background_transparent"
+            android:contentDescription="imgbtn"
+            android:visibility="invisible"
+            app:srcCompat="@android:drawable/ic_media_play" />
+    </com.gc.materialdesign.views.ButtonRectangle>
 
     <com.gc.materialdesign.views.ButtonRectangle
         android:id="@+id/btn5"
@@ -55,8 +104,19 @@
         android:layout_marginTop="100dp"
         android:background="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="@+id/guidelineVertR"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" >
 
+        <ImageButton
+            android:id="@+id/imgBtn5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/background_transparent"
+            android:contentDescription="imgbtn"
+            android:visibility="invisible"
+            app:srcCompat="@android:drawable/ic_media_play" />
+    </com.gc.materialdesign.views.ButtonRectangle>
 
     <com.gc.materialdesign.views.ButtonRectangle
         android:id="@+id/btn6"
@@ -66,7 +126,18 @@
         android:background="@color/colorPrimary"
         app:layout_constraintStart_toStartOf="@+id/btn5"
         app:layout_constraintTop_toBottomOf="@+id/btn5"
-        tools:layout_editor_absoluteX="108dp" />
+        tools:layout_editor_absoluteX="108dp" >
+        <ImageButton
+            android:id="@+id/imgBtn6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/background_transparent"
+            android:contentDescription="imgbtn"
+            android:visibility="invisible"
+            app:srcCompat="@android:drawable/ic_media_play" />
+    </com.gc.materialdesign.views.ButtonRectangle>
 
     <com.gc.materialdesign.views.ButtonRectangle
         android:id="@+id/btn7"
@@ -76,7 +147,18 @@
         android:background="@color/colorPrimary"
         app:layout_constraintStart_toStartOf="@+id/btn6"
         app:layout_constraintTop_toBottomOf="@+id/btn6"
-        tools:layout_editor_absoluteX="108dp" />
+        tools:layout_editor_absoluteX="108dp" >
+        <ImageButton
+            android:id="@+id/imgBtn7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/background_transparent"
+            android:contentDescription="imgbtn"
+            android:visibility="invisible"
+            app:srcCompat="@android:drawable/ic_media_play" />
+    </com.gc.materialdesign.views.ButtonRectangle>
 
     <com.gc.materialdesign.views.ButtonRectangle
         android:id="@+id/btn8"
@@ -86,7 +168,19 @@
         android:background="@color/colorPrimary"
         app:layout_constraintStart_toStartOf="@+id/btn7"
         app:layout_constraintTop_toBottomOf="@+id/btn7"
-        tools:layout_editor_absoluteX="108dp" />
+        tools:layout_editor_absoluteX="108dp" >
+        <ImageButton
+            android:id="@+id/imgBtn8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/background_transparent"
+            android:contentDescription="imgbtn"
+            android:visibility="invisible"
+            app:srcCompat="@android:drawable/ic_media_play" />
+
+    </com.gc.materialdesign.views.ButtonRectangle>
 
 
     <android.support.constraint.Guideline

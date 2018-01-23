@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.gc.materialdesign.views.Button;
@@ -20,6 +21,8 @@ public class MainActivity extends AppCompatActivity {
     //Interface
     Button[] buttons = new Button[8];
     TextView[] clear = new TextView[8];
+    ImageButton[] playImg = new ImageButton[8];
+
     //rec permissions
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
     private boolean permissionToRecordAccepted = false;
@@ -47,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
 
         //UI-Stuff
+
         buttons[0] = (Button) findViewById(R.id.btn1);
         buttons[1] = (Button) findViewById(R.id.btn2);
         buttons[2] = (Button) findViewById(R.id.btn3);
@@ -65,6 +69,16 @@ public class MainActivity extends AppCompatActivity {
         clear[6] = findViewById(R.id.clear7);
         clear[7] = findViewById(R.id.clear8);
 
+        playImg[0] = findViewById(R.id.imgBtn1);
+        playImg[1] = findViewById(R.id.imgBtn2);
+        playImg[2] = findViewById(R.id.imgBtn3);
+        playImg[3] = findViewById(R.id.imgBtn4);
+        playImg[4] = findViewById(R.id.imgBtn5);
+        playImg[5] = findViewById(R.id.imgBtn6);
+        playImg[6] = findViewById(R.id.imgBtn7);
+        playImg[7] = findViewById(R.id.imgBtn8);
+        
+        
         final TextView playMix = findViewById(R.id.playMix);
 
 
@@ -87,14 +101,14 @@ public class MainActivity extends AppCompatActivity {
             buttons[i].setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view){
-                    trackhandler.handleButton(buttons[index],clear[index], index);
+                    trackhandler.handleButton(buttons[index], clear[index], playImg[index],  index);
                 }
             });
 
             clear[i].setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view){
-                    trackhandler.handleClear(buttons[index],clear[index], index);
+                    trackhandler.handleClear(buttons[index], clear[index], index);
                 }
             });
         }
