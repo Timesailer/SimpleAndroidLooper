@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ema.simpleaudiolooper.MainActivity">
+    android:screenOrientation="portrait"
+    tools:context="ema.simpleaudiolooper.MainActivity"
+    >
 
 
     <com.gc.materialdesign.views.ButtonRectangle
@@ -199,12 +201,13 @@
 
     <TextView
         android:id="@+id/playMix"
-        android:layout_width="116dp"
+        android:layout_width="137dp"
         android:layout_height="40dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="30dp"
         android:text="Play Mix"
+        android:textAlignment="center"
         android:textSize="30sp"
         app:layout_constraintEnd_toStartOf="@+id/guidelineVertR"
         app:layout_constraintStart_toStartOf="@+id/guidelineVertL"

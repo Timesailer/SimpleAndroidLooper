@@ -53,4 +53,12 @@ public class AudioTrackData {
         this.isRecorded = false;
         this.isPlaying = false;
     }
+
+    void pause(){
+        isPlaying = false;
+        if(at != null){
+            at.pause();
+            at.flush();
+        }
+    }
 }

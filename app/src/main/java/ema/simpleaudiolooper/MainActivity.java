@@ -65,14 +65,20 @@ public class MainActivity extends AppCompatActivity {
         clear[6] = findViewById(R.id.clear7);
         clear[7] = findViewById(R.id.clear8);
 
-        TextView playMix = findViewById(R.id.playMix);
+        final TextView playMix = findViewById(R.id.playMix);
 
 
         playMix.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Log.v("saples","onclick");
-                trackhandler.playMix();
+                String btnText = (String) playMix.getText();
+                if(btnText.equals("Play Mix")){
+                    playMix.setText("Stop Mix");
+                    trackhandler.playMix();
+                }else{
+                    playMix.setText("Play Mix");
+                    trackhandler.stopMix();
+                }
             }
         });
 

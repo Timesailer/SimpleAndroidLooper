@@ -30,7 +30,7 @@ public class Trackhandler {
     AudioTrackData[] audioTrackArray = new AudioTrackData[8];
 
     boolean isRecording = false;
-    int recordingIndex = -1;
+    AudioTrackData audioMix = new AudioTrackData();
 
     //buffered recording
     //TODO: truncate the last chunk, optimize shit, see how it works with static tracks
@@ -57,7 +57,6 @@ public class Trackhandler {
             clear.setVisibility(View.VISIBLE);
             onRecord(atd, button);
         }else{
-
             onPlay(atd);
         }
     }
@@ -102,23 +101,18 @@ public class Trackhandler {
 
     void onPlay(final AudioTrackData atd){
         if(!atd.isPlaying()){
-        atd.setPlaying(true);
-        atd.setAudioTrack(initATrack());
-        (new Thread(){
-            @Override
-            public void run(){
-                Log.v("audioshit", "Started playing Thread for Track" + atd);
-                play(atd);
-                Log.v("audioshit", "Close playing Thread for Track" + atd);
-            }
-        }).start();
+            atd.setPlaying(true);
+            atd.setAudioTrack(initATrack());
+            (new Thread(){
+                @Override
+                public void run(){
+                    Log.v("audioshit", "Started playing Thread for Track" + atd);
+                    play(atd);
+                    Log.v("audioshit", "Close playing Thread for Track" + atd);
+                }
+            }).start();
         }else{
-            atd.setPlaying(false);
-            Log.v("data","stop playing");
-            Log.v("data","flush called");
-            atd.getAudioTrack().pause();
-            atd.getAudioTrack().flush();
-            //atd.getAudioTrack().release();
+            atd.pause();
 
         }
     }
@@ -130,7 +124,7 @@ public class Trackhandler {
         Log.v("main", "start writing bufferchunks");
         while(isRecording){
             samples = rec.read(input, 0, 1024);
-             atd.fillAudioBuffer(new BufferTuple(input, samples));
+            atd.fillAudioBuffer(new BufferTuple(input, samples));
         }
         rec.stop();
         //todo not setting color properly
@@ -144,13 +138,16 @@ public class Trackhandler {
         //short[] buffer = atd.getAudioBuffer().get(2).buffer;
         while (atd.isPlaying()){
             for (int i = 0; i < atd.getAudioBuffer().size(); i++){
-
                 atd.getAudioTrack().write(atd.getAudioBuffer().get(i).buffer, 0, atd.getAudioBuffer().get(i).samples);
             }
         }
     }
 
     void playMix(){
+        for(AudioTrackData atd : audioTrackArray){
+            atd.pause();
+        }
+
         int recorded = 0;
         ArrayList<AudioTrackData> atdList = new ArrayList<AudioTrackData>();
         for(int i = 0; i< 8; i++) {
@@ -159,15 +156,17 @@ public class Trackhandler {
                 atdList.add(audioTrackArray[i]);
             }
         }
-
         AudioTrackData[] allSamples= new AudioTrackData[recorded];
         allSamples = atdList.toArray(allSamples);
-       short[] mix =  AudioMixer.combineTracks(allSamples);
-       final AudioTrackData mixData = new AudioTrackData();
-       mixData.getAudioBuffer().add(new BufferTuple(mix,mix.length));
+        short[] mix =  AudioMixer.combineTracks(allSamples);
 
+        audioMix.clear();
+        audioMix.getAudioBuffer().add(new BufferTuple(mix,mix.length));
+        onPlay(audioMix);
+    }
 
-       onPlay(mixData);
+    void stopMix(){
+        audioMix.pause();
     }
 
 
