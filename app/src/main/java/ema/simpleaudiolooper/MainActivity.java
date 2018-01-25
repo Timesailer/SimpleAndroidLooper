@@ -1,6 +1,7 @@
 package ema.simpleaudiolooper;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gc.materialdesign.views.Button;
 
@@ -22,11 +24,14 @@ public class MainActivity extends AppCompatActivity {
     Button[] buttons = new Button[8];
     TextView[] clear = new TextView[8];
     ImageButton[] playImg = new ImageButton[8];
+    TextView saveWav;
 
     //rec permissions
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
+    private static final int REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION = 300;
     private boolean permissionToRecordAccepted = false;
-    private String [] permissions = {Manifest.permission.RECORD_AUDIO};
+    private boolean permissionToWriteAccepted = false;
+    private String [] permissions = {Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -35,8 +40,13 @@ public class MainActivity extends AppCompatActivity {
             case REQUEST_RECORD_AUDIO_PERMISSION:
                 permissionToRecordAccepted  = grantResults[0] == PackageManager.PERMISSION_GRANTED;
                 break;
+            case REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION:
+                permissionToWriteAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
         }
         if (!permissionToRecordAccepted ) finish();
+        if (!permissionToWriteAccepted){
+            //saveWav.setVisibility(View.INVISIBLE);
+        }
 
     }
 
@@ -48,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
 
         //Ask recording permission
         ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
-
         //UI-Stuff
 
         buttons[0] = (Button) findViewById(R.id.btn1);
@@ -77,9 +86,12 @@ public class MainActivity extends AppCompatActivity {
         playImg[5] = findViewById(R.id.imgBtn6);
         playImg[6] = findViewById(R.id.imgBtn7);
         playImg[7] = findViewById(R.id.imgBtn8);
-        
-        
+
+
         final TextView playMix = findViewById(R.id.playMix);
+        saveWav = findViewById(R.id.saveWav);
+
+
 
 
         playMix.setOnClickListener(new View.OnClickListener(){
@@ -93,6 +105,25 @@ public class MainActivity extends AppCompatActivity {
                     playMix.setText("Play Mix");
                     trackhandler.stopMix();
                 }
+            }
+        });
+
+        saveWav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Context context = getApplicationContext();
+                int duration = Toast.LENGTH_SHORT;
+
+                if(trackhandler.saveWav()){
+                    CharSequence text = "Mix saved successfully!";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                }else{
+                    CharSequence text = "Error saving Mix!";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                }
+
             }
         });
 

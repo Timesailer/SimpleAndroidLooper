@@ -15,6 +15,8 @@ import android.widget.TextView;
 
 import com.gc.materialdesign.views.Button;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
@@ -204,5 +206,53 @@ public class Trackhandler {
             }
         }
         return null;
+    }
+
+    public boolean saveWav(){
+        //get mix
+        for(AudioTrackData atd : audioTrackArray){
+            atd.pause();
+        }
+
+        int recorded = 0;
+        ArrayList<AudioTrackData> atdList = new ArrayList<AudioTrackData>();
+        for(int i = 0; i< 8; i++) {
+            if (audioTrackArray[i].isRecorded()) {
+                recorded++;
+                atdList.add(audioTrackArray[i]);
+            }
+        }
+        AudioTrackData[] allSamples= new AudioTrackData[recorded];
+        allSamples = atdList.toArray(allSamples);
+        short[] mix =  AudioMixer.combineTracks(allSamples);
+        //Bits per Sample maybe some work to be done for PCM8 format
+        byte bitspersample = 16;
+        int channelcount = 2;
+        switch (rec.getChannelCount()){
+            case AudioFormat.CHANNEL_IN_MONO:
+                channelcount = 1;
+                break;
+            case AudioFormat.CHANNEL_IN_STEREO:
+                channelcount = 2;
+                break;
+        }
+        //save data half samplerate because otherwise its too fast
+        WavExport export = new WavExport(bitspersample, rec.getSampleRate()/2, rec.getChannelCount(), rec.getAudioFormat());
+
+
+        try {
+            export.exportAsWav(mix);
+            return true;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            Log.v("wavexport", "FileNotFoundException, something wrong with the File to write");
+            return false;
+        } catch(IOException e){
+            e.printStackTrace();
+            Log.v("wavexport", "IOException, something wrong with the Filestream");
+            return false;
+        }
+
+
     }
 }
